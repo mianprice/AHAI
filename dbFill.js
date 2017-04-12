@@ -118,3 +118,59 @@ var db = pgp(config);
 //   });
 
 // Parse STOP_TIMES
+
+var stop_trip_q = `
+  CREATE TABLE stop_trips(
+    trip_id integer references trips(trip_id),
+    stop_id integer references stops(stop_id)
+  );
+`;
+
+var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+var fileSet = [];
+var base = "x";
+for (var i = 0; i<5; i++) {
+  if (i<4) {
+    for (var j = 0; j<26; j++) {
+      fileSet.push(base+alphabet[i]+alphabet[j]);
+    }
+  } else {
+    for (var j = 0; j<6; j++) {
+      fileSet.push(base+alphabet[i]+alphabet[j]);
+    }
+  }
+}
+
+
+
+for(var i=10;i<40;i++){
+  fs.readFile(fileSet[i], {encoding:'utf8'})
+   .then((contents) => {
+     var lines = contents.split('\r\n');
+     lines = lines.map((ele) => {
+       return ele.split(",");
+     });
+     lines.forEach((ele) => {
+       var qstring = `
+       insert into stop_trips values (${ele[0]},${ele[3]})
+       `;
+       db.none(qstring)
+       .then(() => {})
+       .catch((err) => {
+         throw err;
+       })
+     });
+   })
+   .catch((err) => {
+     throw err;
+   });
+}
+
+
+// db.none(stop_trip_q)
+//   .then(() => {
+//     console.log("Check to see if table is there");
+//   })
+//   .catch((err) => {
+//     throw err;
+//   });
