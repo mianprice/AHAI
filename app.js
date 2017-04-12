@@ -1,6 +1,9 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const request = require("request-promise");
+const pgp = require('pg-promise')();
+const config = require('./config');
+var db = pgp(config);
 
 var app = express();
 
@@ -15,38 +18,39 @@ app.get("/", function(req, res, next){
 });
 
 app.post("/search_result", function(req, res, next){
-  //for house:
   var zipcode=req.body.zipcode;
-  var type=req.body.type;
-  var bedroom=req.body.bedroom;
-  var bathroom=req.body.bathroom;
-  var listdate=req.body.listdate;
+  var category=req.body.category;
+  var subcategory=req.body.subcategory;
+  var rating=req.body.rating;
+  var price=req.body.price;
   var walkingtime=req.body.walkingtime;
   var transittype=req.body.transittype;
+  var viewtype = req.body.viewtype;
+  // Make a call to the yelp API
 
-  //for yelp(not changed yet):
-  var zipcode=req.body.zipcode;
-  var type=req.body.type;
-  var bedroom=req.body.bedroom;
-  var bathroom=req.body.bathroom;
-  var listdate=req.body.listdate;
-  var walkingtime=req.body.walkingtime;
-  var transittype=req.body.transittype;
-})
+  // Filter the results on our end using marta db
 
-app.get("/search_map", function(req, res, next){
-  
+  //display the resultset
 
-  res.render("map.hbs")
-})
+});
 
-app.get("/search_table", function(req, res, next){
+app.get("/map", function(req, res, next){
 
-})
 
-app.get("/search/:id", function(req, res, next){
+  res.render("map.hbs");
+});
 
-})
+app.get("/table", function(req, res, next){
+
+
+  res.render("table.hbs");
+});
+
+app.get("/specific/:id", function(req, res, next){
+
+
+  res.render("specific.hbs");
+});
 
 app.listen(9001, function(){
     console.log("listening on 9001");
