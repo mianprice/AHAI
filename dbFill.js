@@ -83,38 +83,38 @@ var db = pgp(config);
 
 
 // Parse STOPS
-var route_q = `
-  CREATE TABLE stops(
-    stop_id integer primary key,
-    stop_code varchar,
-    stop_name varchar,
-    stop_lat varchar,
-    stop_lon varchar
-  );
-`;
-
-db.none(route_q)
-  .then(() => {
-    console.log("Check to see if table is there");
-    fs.readFile('stops.txt', {encoding:'utf8'})
-      .then((contents) => {
-        var lines = contents.split('\r\n');
-        lines = lines.map((element) => {
-          return element.split(",");
-        });
-        lines.forEach((element) => {
-          var qstring = `
-          insert into stops values (${element[0]},'${element[1]}','${element[2]}','${element[3]}','${element[4]}') returning stop_id
-          `;
-          db.one(qstring)
-            .then((result) => {
-              console.log(result);
-            });
-        });
-      });
-  })
-  .catch((err) => {
-    throw err;
-  });
+// var route_q = `
+//   CREATE TABLE stops(
+//     stop_id integer primary key,
+//     stop_code varchar,
+//     stop_name varchar,
+//     stop_lat varchar,
+//     stop_lon varchar
+//   );
+// `;
+//
+// db.none(route_q)
+//   .then(() => {
+//     console.log("Check to see if table is there");
+//     fs.readFile('stops.txt', {encoding:'utf8'})
+//       .then((contents) => {
+//         var lines = contents.split('\r\n');
+//         lines = lines.map((element) => {
+//           return element.split(",");
+//         });
+//         lines.forEach((element) => {
+//           var qstring = `
+//           insert into stops values (${element[0]},'${element[1]}','${element[2]}','${element[3]}','${element[4]}') returning stop_id
+//           `;
+//           db.one(qstring)
+//             .then((result) => {
+//               console.log(result);
+//             });
+//         });
+//       });
+//   })
+//   .catch((err) => {
+//     throw err;
+//   });
 
 // Parse STOP_TIMES

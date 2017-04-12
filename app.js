@@ -3,7 +3,12 @@ const bodyParser = require('body-parser');
 const request = require("request-promise");
 const pgp = require('pg-promise')();
 const config = require('./config');
-var db = pgp(config);
+const Yelp = require('yelp-api-v3');
+var yelp = new Yelp({
+  app_id: config.yelp.APPID,
+  app_secret: config.yelp.APPSECRET
+});
+var db = pgp(config.dbconfig);
 
 var app = express();
 
@@ -27,7 +32,23 @@ app.post("/search_result", function(req, res, next){
   var transittype=req.body.transittype;
   var viewtype = req.body.viewtype;
   // Make a call to the yelp API
+  var place1 = "33.746314,-84.387667";
+  yelp.search({latitude: '33.746314', longitude: '-84.387667'})
+    .then((data) => {
+      data = JSON.parse(data);
+      data["businesses"].forEach((element) => {
+        var place2 = element.coordinates.latitude.toString() + "," + element.coordinates.longitude.toString();
+        var url = "https://maps.googleapis.com/maps/api/directions/json?origin="+place1+"&destination="+place2+"&mode=walking&key=AIzaSyBYC0MCm94ZwG-w5p9SR5PK25AYRjTEIw4"
+        request(url)
+        .then(function(str){
+          var obj = JSON.parse(str)
+          console.log(obj["routes"][0]["legs"][0]["duration"]["text"]);
+          console.log(element.name + " || " + element.coordinates.latitude + " || " + element.coordinates.longitude);
+          console.log();
+        })
 
+      });
+    }).catch(next);
   // Filter the results on our end using marta db
 
   //display the resultset
