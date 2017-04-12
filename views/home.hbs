@@ -1,38 +1,9 @@
 <h1>This is the homepage</h1>
 
-<!-- for house: -->
-
-<form action="/search_result" method="post">
-  <label>zipcode: </label><input type="text" name="zipcode"><br>
-  <label>type: </label>
-  <select name="type">
-    <option value="house">house</option>
-    <option value="townhouse">townhouse</option>
-    <option value="apartment">apartment</option>
-  </select>
-  <label>bedroom: (more than)</label><input type="number" name="bedroom" min="1" max="10" step="1">
-  <label>bathroom: (more than)</label><input type="number" name="bathroom" min="1" max="5" step="0.5">
-  <label>list date: </label><input type="text" name="listdate"><br>
-  <label>walking time(minutes): </label><input type="number" name="walkingtime" min="1" max="30" step="1"><br>
-  <label>bus or train: <label>
-    <select name="transittype">
-      <option value="bus">bus</option>
-      <option value="train">train</option>
-      <option value="both">both</option>
-    </select>
-  <label>table or map view: <label>
-    <select name="viewtype">
-      <option value="table">table</option>
-      <option value="map">map</option>
-    </select>
-</form>
-
-<!-- for yelp: -->
-
 <form action="/search_result" method="post">
   <label>zipcode: </label><input type="text" name="zipcode"><br>
   <label>category: </label><input type="text" name="category"><br>
-  <!-- (sub category options avalailable) -->
+  <label>subcategory: </label><input type="text" name="subcategory"><br>
   <label>rating</label><input type="number" name="rating" min="1" max="5" step="0.5">
   <label>price</label><input type="number" name="price" min="1" max="4" step="1">
   <label>walking time(minutes): </label><input type="number" name="walkingtime" min="1" max="30" step="1"><br>
@@ -47,4 +18,5 @@
       <option value="table">table</option>
       <option value="map">map</option>
     </select>
+  <button type="submit">Search</button>
 </form>
