@@ -85,9 +85,19 @@ app.get("/map", function(req, res, next){
 });
 
 app.get("/table", function(req, res, next){
+  var rest = current_result_set.businesses.map((element) => {
 
+    return {
+      name: element.name,
+      rating: element.rating,
+      price: element.price,
+      url: element.url
+    };
+  });
 
-  res.render("table.hbs");
+  res.render("table.hbs", {
+    locations: rest
+  });
 });
 
 // app.get("/specific/:id", function(req, res, next){
