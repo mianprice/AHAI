@@ -1,1 +1,15 @@
 <div id="map"></div>
+<script type="text/javascript">
+  var locations = [];
+  var count = 0;
+  {{#each yelp_locations}}
+    locations.push(['{{{this.info}}}', {{this.lat}}, {{this.long}}, count++]);
+  {{/each}}
+  var center = {
+    lat: {{coord.lat}},
+    lon: {{coord.lon}}
+  };
+</script>
+<script src="/script.js"></script>
+<script async defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7gp3k7_SKrZ39HfnEXkFsUaLNC1YpS0o&callback=initMap"></script>
