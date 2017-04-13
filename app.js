@@ -24,15 +24,17 @@ app.get("/", function(req, res, next){
 });
 
 app.post("/search_result", function(req, res, next){
-  var zipcode=req.body.zipcode;
-  var category=req.body.category;
-  var subcategory=req.body.subcategory;
-  var rating=req.body.rating;
-  var price=req.body.price;
-  var walkingtime=req.body.walkingtime;
-  var transittype=req.body.transittype;
-  var viewtype = req.body.viewtype;
-  // Make a call to the yelp API
+        var search_term = req.body.search_term;
+      var zipcode=req.body.zipcode;
+      // var category=req.body.category;
+      // var subcategory=req.body.subcategory;
+      var limit = req.body.limit;
+      var rating=req.body.rating;
+      var price=req.body.price;
+      // var walkingtime=req.body.walkingtime;
+      // var transittype=req.body.transittype;
+      var viewtype = req.body.viewtype;
+      // Make a call to the yelp API
   yelp.search({location: '30062'})
     .then((data) => {
       data = JSON.parse(data);
