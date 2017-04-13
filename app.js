@@ -24,7 +24,7 @@ app.get("/", function(req, res, next){
 });
 
 app.post("/search_result", function(req, res, next){
-        var search_term = req.body.search_term;
+      var search_term = req.body.search_term;
       var zipcode=req.body.zipcode;
       // var category=req.body.category;
       // var subcategory=req.body.subcategory;
@@ -35,7 +35,7 @@ app.post("/search_result", function(req, res, next){
       // var transittype=req.body.transittype;
       var viewtype = req.body.viewtype;
       // Make a call to the yelp API
-  yelp.search({location: '30062'})
+  yelp.search({location: zipcode, term: search_term, limit: limit, price: '1,2,3,4'})
     .then((data) => {
       data = JSON.parse(data);
       // Filter the results on our end using marta db
