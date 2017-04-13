@@ -1,8 +1,11 @@
-<h1>This is the homepage</h1>
 
+<img id = "train" src="public/../train.jpg" alt="">
+<h1 id="title">Ziggle</h1>
+
+<div id = "search">
 <form action="/search_result" method="post">
     <label>serch_term</label><input type="text" name="search_term">
-  <label>zipcode: </label><input type="text" name="zipcode"><br>
+  <label>zipcode: </label><input type="text" name="zipcode" placeholder = "required"><br>
   <!-- <label>category: </label><input type="text" name="category"><br>
   <label>subcategory: </label><input type="text" name="subcategory"><br> -->
   <label>limit</label><input type="number" name="limit" min="1" max="50" step="1" value="20">
@@ -22,3 +25,5 @@
     </select>
   <button type="submit">Search</button>
 </form>
+
+</div>

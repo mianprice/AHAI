@@ -4,8 +4,61 @@
         <meta charset="utf-8">
         <title>Ziggle</title>
         <link rel="stylesheet" type="text/css" href="/style.css">
+        <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+
+        <style>
+
+        body {
+          background-color: white;
+        }
+        #title {
+          text-align: center;
+          font-size: 8em;
+          color: black;
+          position: absolute;
+          left: 30vw;
+          bottom: 47vh;
+          font-family: 'Lora', serif;
+          letter-spacing: 0.2em;
+
+        }
+
+        #train {
+          position: absolute;
+          opacity: 0.3;
+          width: 100vw;
+          height: 85vh;
+          bottom: 15vh;
+        }
+
+        #search {
+          position: absolute;
+          left: 35vw;
+          top: 45vh;
+          color: black;
+          font-family: 'Lora', serif;
+
+        }
+
+        button {
+          margin-top: 3vh;
+          margin-left: 5vw;
+          width: 14vw;
+          height: 8vh;
+          font-family: 'Lora', serif;
+
+          font-size: 1.5em;
+
+        }
+
+
+        </style>
     </head>
     <body>
         {{{body}}}
+
+        <script src="/script.js"></script>
+        <script async defer
+        					src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7gp3k7_SKrZ39HfnEXkFsUaLNC1YpS0o&callback=initMap"></script>
     </body>
 </html>
