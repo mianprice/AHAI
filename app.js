@@ -101,11 +101,11 @@ app.get("/table", function(req, res, next){
 });
 
 app.get("/about", function(req, res, next){
-  res.render("about.hbs")
+  res.render("about.hbs");
 })
 
 app.get("/contact", function(req, res, next){
-  res.render("constact_us.hbs")
+  res.render("contact_us.hbs");
 })
 
 // app.get("/specific/:id", function(req, res, next){
