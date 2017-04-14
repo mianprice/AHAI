@@ -20,10 +20,30 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static("public"));
 
 app.get("/", function(req, res, next){
-    res.render('home.hbs');
+    var stops, routes;
+    db.any('select stop_name, route_id, stop_id from stops inner join route_stop using (stop_id)')
+        .then((data)=>{
+            stops = data.map((element)=>{
+                return {name: element.stop_name, route_id: `route_id${element.route_id}`, stop_id: element.stop_id};
+            });
+            return db.any('select route_long_name, route_id from routes')
+        })
+        .then((data)=>{
+            routes = data.map((element)=>{
+                return {name: element.route_long_name, route_id: `route_id${element.route_id}`};
+            });
+            res.render('home.hbs', {
+                routes: routes,
+                stops:stops
+            });
+        })
+        .catch(next);
+
+
 });
 
 app.post("/search_result", function(req, res, next){
+
       var search_term = req.body.search_term;
       var zipcode=req.body.zipcode;
       // var category=req.body.category;
@@ -35,7 +55,11 @@ app.post("/search_result", function(req, res, next){
       // var transittype=req.body.transittype;
       var viewtype = req.body.viewtype;
       // Make a call to the yelp API
-  yelp.search({location: zipcode, term: search_term, limit: limit, price: '1,2,3,4'})
+      var stop = req.body.stop;
+      db.one('select stop_lat, stop_lon from stops where stop_id = $1', stop)
+        .then((data)=> {
+            return yelp.search({latitude: data.stop_lat, longitude: data.stop_lon, term: search_term, limit: limit, price: '1,2,3,4'});
+        })
     .then((data) => {
       data = JSON.parse(data);
       // Filter the results on our end using marta db
