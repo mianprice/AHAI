@@ -1,3 +1,13 @@
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
 html,
 body {
 	height: 100vh;
@@ -5,6 +15,59 @@ body {
 	padding: 0;
 	overflow: hidden;
 }
+
+/*home page*/
+.home_wrapper{
+	position: absolute;
+	top: 10vh;
+	height: 90vh;
+	width: 100vw;
+	background-image: url(/assets/background.jpg);
+	background-size: cover;
+}
+
+#search{
+	width: 60vw;
+	height: 60vh;
+	margin-left: 20vw;
+	margin-top: 15vh;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+#title{
+	text-align: center;
+	font-family: 'Raleway', sans-serif;
+	color: black;
+	padding-top: 4vh;
+	font-size: 4vw;
+	font-weight: 200;
+	letter-spacing: 1vw;
+}
+
+.home_nav_div{
+	height: 10vh;
+}
+
+#logo{
+	float: left;
+	height: 10vh;
+	margin-left: 2vw;
+}
+
+#home_nav{
+	float: right;
+}
+
+#home_nav li{
+	float: left;
+	list-style: none;
+	padding-left: 2vw;
+	padding-right: 2vw;
+	padding-top: 1vw;
+	font-family: 'Raleway', sans-serif;
+}
+
+/*map page*/
 #map {
 	margin-top: 10vh;
 	height: 90vh;
