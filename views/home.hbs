@@ -13,7 +13,20 @@
 <div id = "search">
 <h1 id="title">SMARTA</h1>
 <form action="/search_result" method="post">
-    <label>serch_term</label><input type="text" name="search_term">
+    <label>search_term</label><input type="text" name="search_term">
+    <label>Route</label><select name="route" id="route">
+        {{#each routes}}
+            <option value="{{this.route_id}}">{{this.name}}</option>
+
+        {{/each}}
+    </select>
+
+    <label>Stop</label><select id="stop" name="stop">
+        {{#each stops}}
+            <option class = '{{this.route_id}} stop_option' value="{{this.stop_id}}">{{this.name}}</option>
+
+        {{/each}}
+    </select>
   <label>zipcode: </label><input type="text" name="zipcode" placeholder = "required"><br>
   <!-- <label>category: </label><input type="text" name="category"><br>
   <label>subcategory: </label><input type="text" name="subcategory"><br> -->
@@ -37,3 +50,12 @@
 
 </div>
 </div>
+
+<script type="text/javascript">
+
+    $('#route').on('change', (event)=>{
+        $('#stop').show();
+        var current = $('#route').val();
+        $('.'+current).show();
+    });
+</script>

@@ -270,3 +270,11 @@ table a {
   font-family: 'Raleway', sans-serif;
 
 }
+
+#stop{
+    display: none;
+}
+
+.stop_option{
+    display: none;
+}
