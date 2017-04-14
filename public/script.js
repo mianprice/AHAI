@@ -8,6 +8,18 @@ function initMap() {
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	});
 
+	var styles = {
+			 default: null,
+			 hide: [
+				 {
+					 featureType: 'poi',
+					 stylers: [{visibility: 'off'}]
+				 }
+			 ]
+		 };
+
+	map.setOptions({styles: styles['hide']});
+
 	var infowindow = new google.maps.InfoWindow({});
 
 	var marker, i;
@@ -20,6 +32,7 @@ function initMap() {
 
 		google.maps.event.addListener(marker, 'click', (function (marker, i) {
 			return function () {
+				map.setCenter(marker.getPosition());
 				infowindow.setContent(locations[i][0]);
 				infowindow.open(map, marker);
 			}
