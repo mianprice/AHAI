@@ -1,7 +1,10 @@
+//rating plug-in
+$('.container').rating();
+
+//map setup
 var map;
 
 function initMap() {
-
 	var map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 13,
 		center: new google.maps.LatLng(center.lat, center.lon),
