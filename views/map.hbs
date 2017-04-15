@@ -4,7 +4,7 @@
 
 <div id="map"></div>
 <nav class="map_nav_div cf">
-  <img id="logo" src="/assets/logo.png" alt="logo">
+  <a href="/"><img id="logo" src="/assets/logo.png" alt="logo"></a>
   <ul id="map_nav">
     <li><a href="/"> Home </a> </li>
     <li><a href="/About"> About </a></li>
@@ -18,10 +18,22 @@
   {{#each yelp_locations}}
     locations.push(['{{{this.info}}}', {{this.lat}}, {{this.long}}, count++]);
   {{/each}}
+  var stops;
+  {{#if num_flag}}
+    stops = [];
+    {{#each centers}}
+      stops.push({
+        lat: {{this.lat}},
+        lon: {{this.lon}}
+      });
+    {{/each}}
+  {{/if}}
+
   var center = {
-    lat: {{coord.lat}},
-    lon: {{coord.lon}}
-  };
+      lat: {{coord.lat}},
+      lon: {{coord.lon}}
+    };
+
 </script>
 <script src="/script.js"></script>
 <script async defer

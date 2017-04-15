@@ -76,7 +76,7 @@ body {
   border: none;
 }
 
-#route{
+#route, #route_type {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance:none;
@@ -226,6 +226,7 @@ body {
 #map {
   display: absolute;
 	height: 100vh;
+  width:100vw;
 }
 
 #map_nav li{
