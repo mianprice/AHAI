@@ -4,6 +4,7 @@ const request = require("request-promise");
 const pgp = require('pg-promise')();
 const config = require('./config');
 const Yelp = require('yelp-api-v3');
+const Promise = require('bluebird');
 var yelp = new Yelp({
   app_id: config.yelp.APPID,
   app_secret: config.yelp.APPSECRET
@@ -90,7 +91,7 @@ app.post("/search_result", function(req, res, next){
       var stop = req.body.stop;
       var route = req.body.route.replace("route_id","");
 
-      var base = 'select distinct on(stop_lat, stop_lon) stop_lat, stop_lon from stops inner join route_stop using (stop_id) ';
+      var base = 'select distinct on(stop_lat, stop_lon) stop_lat, stop_lon, stop_name from stops inner join route_stop using (stop_id) ';
       var route_query = 'where route_id = $1'
       var stop_query = 'where stop_id = $1';
       if (stop === "all_stops") {
@@ -102,13 +103,12 @@ app.post("/search_result", function(req, res, next){
       }
       db.any(dbq, filter_by)
         .then((data)=> {
-            console.log('db returned');
             if (data.length === 1) {
-              console.log('hello');
+              var stop_name = data[0].stop_name;
               yelp.search({latitude: data[0].stop_lat, longitude: data[0].stop_lon, term: search_term, limit: limit, price: price, radius: radius})
               .then((data) => {
-                // console.log(data);
                 data = JSON.parse(data);
+                data["stop_name"] = stop_name;
                 current_result_set.push(data);
                 if (viewtype === 'map') {
                   res.redirect('/map');
@@ -118,17 +118,19 @@ app.post("/search_result", function(req, res, next){
               }).catch(next);
             } else if (data.length > 1) {
               // get multiple searches
-              console.log('hello again');
               var checker = data.length;
+              var stop_names = [];
               for (var i = 0; i < data.length; i++) {
-                console.log("inside the for loop");
-                yelp.search({latitude: data[i].stop_lat, longitude: data[i].stop_lon, term: search_term, limit: limit, price: price, radius: radius})
-                  .then((data)=> {
-                    console.log("inside the yelp promise");
-                    // data = JSON.parse(data);
-                    current_result_set.push(JSON.parse(data));
-                    console.log(current_result_set.length);
-                    console.log(checker);
+                var stop_name = data[i].stop_name;
+                stop_names.push(stop_name);
+                Promise.all([
+                  i,
+                  yelp.search({latitude: data[i].stop_lat, longitude: data[i].stop_lon, term: search_term, limit: limit, price: price, radius: radius})
+                ])
+                  .spread((i, data)=> {
+                    data=JSON.parse(data)
+                    data["stop_name"]=stop_names[i];
+                    current_result_set.push(data);
                     if (current_result_set.length === checker) {
                       if (viewtype === 'map') {
                         res.redirect('/map');
@@ -152,6 +154,8 @@ app.get("/map", function(req, res, next){
   if (current_result_set.length === 1) {
     num_flag = false;
     centers.push({
+      name:
+      current_result_set[0].stop_name,
       lat: current_result_set[0].region.center.latitude,
       lon: current_result_set[0].region.center.longitude
     });
@@ -159,7 +163,7 @@ app.get("/map", function(req, res, next){
       return (element.rating >= parseInt(min_rating));
     });
     locations = locations.map((element) => {
-      var html_string = `<img src="${element.image_url}"><br><strong>${element.name.replace("'","&#39;")}</strong><br><a href="${element.url}">Check out on Yelp</a><br><span>Rating: ${element.rating}</span><br><span>Price: ${element.price}`;
+      var html_string = `<img src="${element.image_url}"  style="width:150px;"><br><strong>${element.name.replace("'","&#39;")}</strong><br><a href="${element.url}">Check out on Yelp</a><br><span>Rating: ${element.rating}</span><br><span>Price: ${element.price}`;
       return {
         info: html_string,
         lat: element.coordinates.latitude,
@@ -176,7 +180,10 @@ app.get("/map", function(req, res, next){
     // parse multiple yelp results
     var locations = [];
     current_result_set.forEach((element)=> {
+      // console.log(element.stop_name)
       centers.push({
+        name:
+        element.stop_name,
         lat: element.region.center.latitude,
         lon: element.region.center.longitude
       });
@@ -187,7 +194,7 @@ app.get("/map", function(req, res, next){
     });
 
     locations = locations.map((element) => {
-      var html_string = `<img src="${element.image_url}"><br><strong>${element.name.replace("'","&#39;")}</strong><br><a href="${element.url}">Check out on Yelp</a><br><span>Rating: ${element.rating}</span><br><span>Price: ${element.price}`;
+      var html_string = `<img src="${element.image_url}"  style="width:150px;"><br><strong>${element.name.replace("'","&#39;")}</strong><br><a href="${element.url}">Check out on Yelp</a><br><span>Rating: ${element.rating}</span><br><span>Price: ${element.price}`;
       return {
         info: html_string,
         lat: element.coordinates.latitude,

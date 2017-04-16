@@ -67,6 +67,14 @@ function initMap() {
 			});
 
 			center_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+
+
+			google.maps.event.addListener(center_marker, 'click', (function (marker, i) {
+				return function () {
+					infowindow.setContent("<p>"+stops[i].name+"</p>");
+					infowindow.open(map, center_marker);
+				}
+			})(center_marker, i));
 		}
 	}
 
