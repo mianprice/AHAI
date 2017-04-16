@@ -1,7 +1,4 @@
 <div class="map_wrapper">
-
-
-
 <div id="map"></div>
 <nav class="map_nav_div cf">
   <a href="/"><img id="logo" src="/assets/logo.png" alt="logo"></a>
@@ -23,6 +20,7 @@
     stops = [];
     {{#each centers}}
       stops.push({
+        name: "{{this.name}}",
         lat: {{this.lat}},
         lon: {{this.lon}}
       });
