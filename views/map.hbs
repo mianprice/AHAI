@@ -15,17 +15,14 @@
   {{#each yelp_locations}}
     locations.push(['{{{this.info}}}', {{this.lat}}, {{this.long}}, count++]);
   {{/each}}
-  var stops;
-  {{#if num_flag}}
-    stops = [];
-    {{#each centers}}
-      stops.push({
-        name: "{{this.name}}",
-        lat: {{this.lat}},
-        lon: {{this.lon}}
-      });
-    {{/each}}
-  {{/if}}
+  var stops = [];
+  {{#each centers}}
+    stops.push({
+      name: "{{this.name}}",
+      lat: {{this.lat}},
+      lon: {{this.lon}}
+    });
+  {{/each}}
 
   var center = {
       lat: {{coord.lat}},

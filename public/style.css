@@ -22,6 +22,7 @@ body {
 	width: 100vw;
 	background-image: url(/assets/background.jpg);
 	background-size: cover;
+  overflow: hidden;
 }
 
 @media (max-width: 500px){
@@ -366,6 +367,10 @@ body {
 
 }
 
+.map_wrapper {
+  overflow: hidden;
+}
+
 
 /*table page*/
 
@@ -488,9 +493,6 @@ table a {
   margin-left: 28vw;
   margin-right: 28vw;
 }
-
-
-
 
 
 /*contact page*/
