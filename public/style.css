@@ -13,7 +13,7 @@ body {
 	height: 100vh;
 	margin: 0;
 	padding: 0;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 /*home page*/
@@ -24,6 +24,7 @@ body {
 	width: 100vw;
 	background-image: url(/assets/background.jpg);
 	background-size: cover;
+  overflow: hidden;
 }
 
 #search{
@@ -259,6 +260,10 @@ body {
 
 }
 
+.map_wrapper {
+  overflow: hidden;
+}
+
 
 /*table page*/
 
@@ -377,9 +382,6 @@ table a {
   margin-left: 28vw;
   margin-right: 28vw;
 }
-
-/*table page*/
-
 
 
 /*contact page*/
