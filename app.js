@@ -86,7 +86,7 @@ app.post("/search_result", function(req, res, next){
           var checker = data.length;
           var stop_names = [];
           for (var i = 0; i < data.length; i++) {
-            var stop_name = data[i].stop_names[i];
+            var stop_name = data[i].stop_name;
             stop_names.push(stop_name);
             Promise.all([
               i,
