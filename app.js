@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.static("public"));
 
+
 app.get("/", function(req, res, next){
     var stops, routes;
     db.any('select stop_name, route_id, stop_id from stops inner join route_stop using (stop_id)')
@@ -85,7 +86,7 @@ app.post("/search_result", function(req, res, next){
           var checker = data.length;
           var stop_names = [];
           for (var i = 0; i < data.length; i++) {
-            var stop_name = data[i].stop_name;
+            var stop_name = data[i].stop_names[i];
             stop_names.push(stop_name);
             Promise.all([
               i,
@@ -94,6 +95,9 @@ app.post("/search_result", function(req, res, next){
               .spread((i, data)=> {
                 data=JSON.parse(data)
                 data["stop_name"]=stop_names[i];
+                data.businesses.forEach((element) => {
+                  element["stop_name"] = stop_names[i];
+                })
                 current_result_set.push(data);
                 if (current_result_set.length === checker) {
                   if (viewtype === 'map') {
@@ -107,7 +111,6 @@ app.post("/search_result", function(req, res, next){
           }
         })
         .catch(next);
-
 });
 
 app.get("/map", function(req, res, next){
@@ -162,7 +165,8 @@ app.get("/table", function(req, res, next){
         name: element.name,
         rating: element.rating,
         price: element.price,
-        url: element.url
+        url: element.url,
+        stop_name: element.stop_name
       };
     });
     rest = rest.concat(current);
