@@ -67,10 +67,15 @@
     </select>
   </div>
   <div id="filter_div3">
-  <label>Limit: </label><input type="number" name="limit" min="1" max="50" step="1" value="20">
+  <label>Limit: </label><input id="limit" type="number" name="limit" min="1" max="50" step="1" value="20">
+  <div id="show_map_radio_div">
   <input type="radio" name="viewtype" value="map" checked>
   <label>Show results in map</label>
-  <input type="radio" name="viewtype" value="table"> <label>Show results in list</label>
+  </div>
+  <div id="show_list_radio_div">
+  <input type="radio" name="viewtype" value="table">
+  <label>Show results in list</label>
+  </div>
   <button id="search_submit" type="submit">Search</button>
 </div>
 </form>

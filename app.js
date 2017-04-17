@@ -21,22 +21,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.static("public"));
 
-// app.use(app.router);
-
-// app.all('*', function(req, res, next) {
-//     setTimeout(function() {
-//         next();
-//     }, 120000); // 120 seconds
-// });
-
-// var timeout = require('connect-timeout'); //express v4
-//
-// app.use(timeout('5s'));
-// app.use(haltOnTimedout);
-//
-// function haltOnTimedout(req, res, next){
-//   if (!req.timedout) next();
-// }
 
 app.get("/", function(req, res, next){
     var stops, routes;
@@ -109,6 +93,10 @@ app.post("/search_result", function(req, res, next){
               .then((data) => {
                 data = JSON.parse(data);
                 data["stop_name"] = stop_name;
+                data.businesses.forEach((element) => {
+                  element["stop_name"] = stop_name;
+                })
+
                 current_result_set.push(data);
                 if (viewtype === 'map') {
                   res.redirect('/map');
@@ -130,6 +118,9 @@ app.post("/search_result", function(req, res, next){
                   .spread((i, data)=> {
                     data=JSON.parse(data)
                     data["stop_name"]=stop_names[i];
+                    data.businesses.forEach((element) => {
+                      element["stop_name"] = stop_names[i];
+                    })
                     current_result_set.push(data);
                     if (current_result_set.length === checker) {
                       if (viewtype === 'map') {
@@ -219,24 +210,24 @@ app.get("/map", function(req, res, next){
 app.get("/table", function(req, res, next){
   if (current_result_set.length === 1) {
     var rest = current_result_set[0].businesses.map((element) => {
-
       return {
         name: element.name,
         rating: element.rating,
         price: element.price,
-        url: element.url
+        url: element.url,
+        stop_name: element.stop_name
       };
     });
   } else {
     var rest = [];
     current_result_set.forEach((element)=> {
       var current = element.businesses.map((element) => {
-
         return {
           name: element.name,
           rating: element.rating,
           price: element.price,
-          url: element.url
+          url: element.url,
+          stop_name: element.stop_name
         };
       });
       rest = rest.concat(current);
