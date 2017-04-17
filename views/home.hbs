@@ -8,10 +8,12 @@
     <li> <a href="/contact"> Contact Us </a> </li>
   </ul>
 </nav>
-<!-- Need to allow search by stop or route -->
 
 <div id = "search" class="cf">
 <h1 id="title">SMARTA</h1>
+{{#if search_error.check}}
+  <div id="search_error">{{search_error.message}}</div>
+{{/if}}
 <form action="/search_result" method="post">
     <div id="filter_div1">
     <label class="filter_div1_label">Search Term: </label>

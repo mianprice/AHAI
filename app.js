@@ -11,7 +11,7 @@ var yelp = new Yelp({
 });
 var db = pgp(config.dbconfig);
 var current_result_set = [];
-var min_rating;
+var min_rating, search_error;
 
 var app = express();
 
@@ -38,12 +38,12 @@ app.get("/", function(req, res, next){
             });
             res.render('home.hbs', {
                 routes: routes,
-                stops:stops
+                stops: stops,
+                search_error: search_error
             });
+            search_error = {};
         })
         .catch(next);
-
-
 });
 
 app.post("/search_result", function(req, res, next){
@@ -63,13 +63,20 @@ app.post("/search_result", function(req, res, next){
         price += p > 3 ? ",2,3,4" : (p > 2 ? ",2,3" : (p > 1 ? ",2" : ""));
       }
       if (req.body.time === undefined) {
-        var time = 300;
+        var time = 1800;
       } else {
         var time = req.body.time;
       }
       var radius = parseInt(parseInt(time) * 1.38582);
       var viewtype = req.body.viewtype;
       var stop = req.body.stop;
+      if (req.body.route === undefined) {
+        search_error = {
+          check: true,
+          message: 'Route must be specified. Please choose a route below.'
+        };
+        res.redirect('/');
+      }
       var route = req.body.route.replace("route_id","");
       var base = 'select distinct on(stop_lat, stop_lon) stop_lat, stop_lon, stop_name from stops inner join route_stop using (stop_id) ';
       var route_query = 'where route_id = $1'
